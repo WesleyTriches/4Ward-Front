@@ -1,3 +1,14 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) important;
+
+@theme {
+  --color-brand-50: #e8f5f6;
+  --color-brand-100: #cfeaed;
+  --color-brand-500: #1a8f9c;
+  --color-brand-600: #0f7b8a;
+  --color-brand-700: #0c6571;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

@@ -1,16 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { getToken } from "../login/auth_service";
-import { Physiotherapist } from "../types/physiotherapist";
+import { Physiotherapist } from "../types/physiotherapists";
 import { Specialty } from "../types/specialty";
 
-export default function PhysiotherapistsPage() {
+type PhysiotherapistsPageProps = {
+    searchParams: Promise<{ city?: string }>;
+};
+
+export default function PhysiotherapistsPage({ searchParams }: PhysiotherapistsPageProps) {
+
+    // searchParams é uma Promise; em Client Component lemos com use() do React
+    const { city: cityDaUrl } = use(searchParams);
 
     const [physiotherapists, setPhysiotherapists] = useState<Physiotherapist[]>([]);
     const [specialties, setSpecialties] = useState<Specialty[]>([]);
 
-    const [city, setCity] = useState("");
+    const [city, setCity] = useState(cityDaUrl ?? "");
     const [specialtyId, setSpecialtyId] = useState("");
     const [serviceMode, setServiceMode] = useState("");
 

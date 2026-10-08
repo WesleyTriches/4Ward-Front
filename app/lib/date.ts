@@ -29,24 +29,29 @@ export const MONTHS = [
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
+/** Date -> "13.10.2026" */
 export function formatDMY(date: Date): DateDMY {
   return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}`;
 }
 
+/** "13.10.2026" -> Date (meia-noite, horário local) */
 export function parseDMY(value: DateDMY): Date {
   const [day, month, year] = value.split(".").map(Number);
   return new Date(year, month - 1, day);
 }
 
+/** Date -> "2026-10-13" (horário local). Útil como chave e como query `date`. */
 export function toDateKey(date: Date): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
+/** ISO -> "10:00" (horário local) */
 export function formatTime(iso: string): TimeHM {
   const date = new Date(iso);
   return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
+/** Combina "13.10.2026" + "10:00" (local) em ISO UTC para enviar à API. */
 export function combineDMYAndTime(date: DateDMY, time: TimeHM): string {
   const [hours, minutes] = time.split(":").map(Number);
   const base = parseDMY(date);
@@ -64,11 +69,13 @@ export function addDays(date: Date, amount: number): Date {
   return result;
 }
 
+/** Segunda-feira da semana de `date` */
 export function startOfWeek(date: Date): Date {
   const offset = (date.getDay() + 6) % 7;
   return startOfDay(addDays(date, -offset));
 }
 
+/** Segunda a domingo */
 export function getWeekDays(date: Date): Date[] {
   const start = startOfWeek(date);
   return Array.from({ length: 7 }, (_, index) => addDays(start, index));
@@ -82,10 +89,12 @@ export function isSameDay(a: Date, b: Date): boolean {
   );
 }
 
+/** "Terça-feira, 13 de outubro" */
 export function formatLongDate(date: Date): string {
   return `${WEEKDAYS_LONG[date.getDay()]}, ${date.getDate()} de ${MONTHS[date.getMonth()]}`;
 }
 
+/** "Outubro 2026" */
 export function formatMonthYear(date: Date): string {
   const month = MONTHS[date.getMonth()];
   return `${month.charAt(0).toUpperCase()}${month.slice(1)} ${date.getFullYear()}`;

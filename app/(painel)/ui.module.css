@@ -1,0 +1,224 @@
+/* Estilos compartilhados pelas telas do /dashboard (agenda e consultas). */
+
+/* ---------- Raiz da página ---------- */
+.page {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  color: var(--ink-900);
+}
+
+/*
+  O Bootstrap (carregado no <head>) define margens em p, h1..h6, ul, dl etc.
+  Zeramos aqui, com especificidade maior que a dele, e cada classe abaixo
+  declara a margem que realmente quer.
+*/
+.page :where(h1, h2, h3, p, ul, ol, dl, dt, dd, figure) {
+  margin: 0;
+  padding: 0;
+}
+
+.page :where(ul, ol) {
+  list-style: none;
+}
+
+.page :where(button, input, select, textarea) {
+  font: inherit;
+}
+
+/* ---------- Cabeçalho ---------- */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink-900);
+}
+
+.subtitle {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+
+/* ---------- Botões ---------- */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--brand-600);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: var(--brand-700);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btnBlock {
+  composes: btnPrimary;
+  width: 100%;
+  padding: 12px 16px;
+}
+
+.btnDanger {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--danger-600);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btnDanger:hover:not(:disabled) {
+  background: var(--danger-700);
+}
+
+.btnDanger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btnGhost {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btnGhost:hover {
+  background: var(--line-soft);
+}
+
+.linkBrand {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand-600);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.linkBrand:hover {
+  text-decoration: underline;
+}
+
+.linkDanger {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--danger-600);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.linkDanger:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Mensagens ---------- */
+.notice,
+.alert {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.notice {
+  background: var(--success-50);
+  color: var(--success-700);
+}
+
+.alert {
+  background: var(--danger-50);
+  color: var(--danger-700);
+}
+
+.fieldError {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: var(--danger-600);
+}
+
+.muted {
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+
+/* ---------- Cartões e estados vazios ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.emptyBox {
+  margin-top: 12px;
+  padding: 40px 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--ink-600);
+}
+
+/* ---------- Formulários ---------- */
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-700);
+}
+
+.input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink-900);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 3px var(--brand-100);
+}
+
+textarea.input {
+  resize: vertical;
+}

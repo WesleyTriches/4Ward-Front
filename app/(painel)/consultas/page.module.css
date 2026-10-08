@@ -1,0 +1,328 @@
+/* Estilos específicos de Minhas consultas. Os genéricos estão em ../ui.module.css */
+
+/* ---------- Abas ---------- */
+.tabs {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--ink-500);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ink-900);
+}
+
+.tabActive,
+.tabActive:hover {
+  border-bottom-color: var(--brand-600);
+  color: var(--brand-700);
+  font-weight: 600;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.loading {
+  margin-top: 16px;
+}
+
+/* ---------- Cartão de consulta ---------- */
+.appointment {
+  padding: 16px;
+}
+
+.appointmentHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.counterpart {
+  min-width: 0;
+}
+
+.counterpartName {
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-900);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.counterpartInfo {
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badgeScheduled {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+
+.badgeCompleted {
+  background: var(--success-50);
+  color: var(--success-700);
+}
+
+.badgeCancelled {
+  background: var(--danger-50);
+  color: var(--danger-700);
+}
+
+.badgeNoShow {
+  background: var(--warning-50);
+  color: var(--warning-700);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 0.875rem;
+}
+
+.factLabel {
+  font-size: 0.75rem;
+  color: var(--ink-500);
+}
+
+.factValue {
+  font-weight: 500;
+  color: var(--ink-900);
+}
+
+.reason {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--ink-600);
+}
+
+.reasonLabel {
+  font-weight: 500;
+  color: var(--ink-700);
+}
+
+.cancelNote {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: var(--danger-600);
+}
+
+.cancelTrigger {
+  margin-top: 12px;
+}
+
+.cancelPanel {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--surface-muted);
+}
+
+.cancelLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-600);
+}
+
+.cancelActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ---------- Painel de agendamento ---------- */
+.booking {
+  margin-top: 24px;
+  padding: 16px;
+  border-color: var(--brand-100);
+}
+
+.bookingHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bookingTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-500);
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background: var(--line-soft);
+}
+
+.block {
+  margin-top: 16px;
+}
+
+.blockLarge {
+  margin-top: 20px;
+}
+
+.sectionTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink-700);
+}
+
+.pickerWrap {
+  margin-top: 8px;
+}
+
+.dayHeading {
+  margin-top: 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.dayHeadingDate {
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--ink-500);
+}
+
+.slotHint {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}
+
+.slotGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.slotButton {
+  padding: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink-700);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.slotButton:hover {
+  border-color: var(--brand-500);
+}
+
+.slotButtonSelected,
+.slotButtonSelected:hover {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--ink-500);
+}
+
+.painRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.painButton {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink-700);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.painButton:hover {
+  border-color: var(--brand-500);
+}
+
+.painButtonSelected,
+.painButtonSelected:hover {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.painScale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--ink-500);
+}
+
+.summary {
+  margin-top: 20px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--surface-muted);
+  font-size: 0.875rem;
+  color: var(--ink-700);
+}
+
+.confirm {
+  margin-top: 20px;
+}
+
+@media (min-width: 640px) {
+  .facts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .slotGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

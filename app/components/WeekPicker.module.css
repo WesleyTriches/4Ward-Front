@@ -1,0 +1,115 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-600);
+  cursor: pointer;
+}
+
+.navButton:hover:not(:disabled) {
+  background: var(--line-soft);
+}
+
+.navButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.center {
+  text-align: center;
+}
+
+.month {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.range {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--ink-500);
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink-700);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.day:hover:not(:disabled) {
+  border-color: var(--brand-500);
+}
+
+.daySelected,
+.daySelected:hover:not(:disabled) {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: #ffffff;
+}
+
+.dayDisabled,
+.dayDisabled:disabled {
+  background: var(--surface-muted);
+  border-color: var(--line-soft);
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.dayName {
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+.dayNumber {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.dot {
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--brand-500);
+}
+
+.dotSelected {
+  background: #ffffff;
+}
+
+@media (min-width: 640px) {
+  .days {
+    gap: 8px;
+  }
+}

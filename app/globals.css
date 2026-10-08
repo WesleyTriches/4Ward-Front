@@ -1,6 +1,36 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* ---- 4Ward · marca ---- */
+  --brand-50: #e8f5f6;
+  --brand-100: #cfeaed;
+  --brand-500: #1a8f9c;
+  --brand-600: #0f7b8a;
+  --brand-700: #0c6571;
+
+  /* ---- 4Ward · neutros ---- */
+  --ink-900: #0f172a;
+  --ink-700: #334155;
+  --ink-600: #475569;
+  --ink-500: #64748b;
+  --ink-400: #94a3b8;
+  --line: #e2e8f0;
+  --line-soft: #f1f5f9;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+
+  /* ---- 4Ward · estados ---- */
+  --success-50: #ecfdf5;
+  --success-500: #10b981;
+  --success-700: #047857;
+  --danger-50: #fff1f2;
+  --danger-500: #f43f5e;
+  --danger-600: #e11d48;
+  --danger-700: #be123c;
+  --warning-50: #fffbeb;
+  --warning-500: #f59e0b;
+  --warning-700: #b45309;
 }
 
 @media (prefers-color-scheme: dark) {

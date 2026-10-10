@@ -2,11 +2,54 @@
 
 .form {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 16px;
+}
+
+.fields {
+  display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 12px;
-  margin-top: 16px;
-  padding: 16px;
+}
+
+.formFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.previewTitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-500);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.chipNew {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+
+.chipSkip {
+  background: var(--line-soft);
+  color: var(--ink-400);
+  font-weight: 500;
 }
 
 .formLabel {

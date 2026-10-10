@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getToken } from "../login/auth_service";
-import { Physiotherapist } from "../types/physiotherapist";
+import { Physiotherapist } from "../types/physiotherapists";
 import { Specialty } from "../types/specialty";
 
 export default function PhysiotherapistsPage() {

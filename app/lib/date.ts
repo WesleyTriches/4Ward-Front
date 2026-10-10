@@ -99,3 +99,41 @@ export function formatMonthYear(date: Date): string {
   const month = MONTHS[date.getMonth()];
   return `${month.charAt(0).toUpperCase()}${month.slice(1)} ${date.getFullYear()}`;
 }
+
+/* ------------------------------------------------------------------ */
+/* Intervalos de horário                                               */
+/* ------------------------------------------------------------------ */
+
+/** "08:30" -> 510 */
+export function timeToMinutes(time: TimeHM): number {
+  const [hours, minutes] = time.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+/** 510 -> "08:30" */
+export function minutesToTime(total: number): TimeHM {
+  return `${pad(Math.floor(total / 60))}:${pad(total % 60)}`;
+}
+
+/**
+ * Horários de `start` até `end` (inclusive), de `stepMinutes` em `stepMinutes`.
+ * Sem `end`, devolve só o `start`. Se o intervalo for inválido, devolve [].
+ */
+export function buildTimeRange(
+  start: TimeHM,
+  end: TimeHM | "",
+  stepMinutes: number,
+): TimeHM[] {
+  if (!start) return [];
+  if (!end) return [start];
+
+  const from = timeToMinutes(start);
+  const to = timeToMinutes(end);
+  if (to < from || stepMinutes <= 0) return [];
+
+  const result: TimeHM[] = [];
+  for (let current = from; current <= to; current += stepMinutes) {
+    result.push(minutesToTime(current));
+  }
+  return result;
+}

@@ -1,11 +1,14 @@
-import { apiFetch } from "./apiClient";
-import { formatDMY, formatTime } from "../lib/date";
+import { ApiError, apiFetch, getErrorMessage } from "./apiClient";
+import { combineDMYAndTime, formatDMY, formatTime } from "../lib/date";
 import type {
   AgendaSlot,
+  BatchResult,
   CreateScheduleInput,
+  DateDMY,
   Schedule,
   ScheduleAppointment,
   SlotState,
+  TimeHM,
 } from "../types/schedule";
 
 /**
@@ -39,6 +42,46 @@ export function createSchedule(input: CreateScheduleInput): Promise<Schedule> {
     method: "POST",
     body: JSON.stringify(input),
   });
+}
+
+/**
+ * Publica vários horários de um mesmo dia. A API só aceita um por requisição,
+ * então envia em sequência e só conta como "created" o que o servidor confirmou.
+ * - 409 (já existe / passado) vai para `skipped` e o lote continua.
+ * - Servidor fora do ar ou sessão expirada interrompem o lote.
+ */
+export async function createSchedulesBatch(
+  date: DateDMY,
+  times: TimeHM[],
+): Promise<BatchResult> {
+  const result: BatchResult = { created: [], skipped: [], failed: [] };
+
+  for (let index = 0; index < times.length; index++) {
+    const time = times[index];
+
+    try {
+      await createSchedule({ dateTime: combineDMYAndTime(date, time) });
+      result.created.push(time);
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 409) {
+        result.skipped.push(time);
+        continue;
+      }
+
+      const message = getErrorMessage(error);
+
+      if (error instanceof ApiError && (error.status === 0 || error.status === 401)) {
+        for (const rest of times.slice(index)) {
+          result.failed.push({ time: rest, message });
+        }
+        break;
+      }
+
+      result.failed.push({ time, message });
+    }
+  }
+
+  return result;
 }
 
 /* ------------------------------------------------------------------ */

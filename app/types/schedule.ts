@@ -107,3 +107,21 @@ export type AgendaSlot = {
   appointmentId: number | null;
   patientName: string | null;
 };
+
+/* ------------------------------------------------------------------ */
+/* Criação de horários em lote                                         */
+/* ------------------------------------------------------------------ */
+
+export type BatchFailure = {
+  time: TimeHM;
+  message: string;
+};
+
+export type BatchResult = {
+  /** Gravados e confirmados pela API */
+  created: TimeHM[];
+  /** API respondeu 409: já cadastrado (ou no passado) */
+  skipped: TimeHM[];
+  /** Qualquer outro erro */
+  failed: BatchFailure[];
+};

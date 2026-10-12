@@ -6,19 +6,27 @@ import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react
 import WeekPicker from "../../components/WeekPicker";
 import { cx } from "../../lib/cx";
 import {
+  buildTimeRange,
   combineDMYAndTime,
   formatDMY,
   formatLongDate,
+  timeToMinutes,
   toDateKey,
 } from "../../lib/date";
 import { getErrorMessage } from "../../services/apiClient";
 import {
-  createSchedule,
+  createSchedulesBatch,
   getMySchedules,
   toAgendaSlot,
 } from "../../services/scheduleService";
 import { getSessionUser } from "../../services/sessionService";
-import type { AgendaSlot, Schedule, SlotState } from "../../types/schedule";
+import type {
+  AgendaSlot,
+  BatchResult,
+  Schedule,
+  SlotState,
+  TimeHM,
+} from "../../types/schedule";
 import ui from "../ui.module.css";
 import styles from "./page.module.css";
 
@@ -53,6 +61,32 @@ const SLOT_UI: Record<
   },
 };
 
+const MAX_BATCH = 24;
+const STEP_OPTIONS = [15, 30, 45, 60, 90, 120];
+
+type PlanStatus = "NEW" | "EXISTS" | "PAST";
+
+function plural(count: number, one: string, many: string): string {
+  return `${count} ${count === 1 ? one : many}`;
+}
+
+function summarize(result: BatchResult, date: string): string {
+  const parts: string[] = [];
+
+  if (result.created.length > 0) {
+    parts.push(
+      `${plural(result.created.length, "horário salvo", "horários salvos")} em ${date}`,
+    );
+  }
+  if (result.skipped.length > 0) {
+    parts.push(
+      `${plural(result.skipped.length, "já existia", "já existiam")}`,
+    );
+  }
+
+  return parts.join(" · ");
+}
+
 export default function AgendaPage() {
   const router = useRouter();
 
@@ -66,7 +100,9 @@ export default function AgendaPage() {
   const [error, setError] = useState("");
 
   const [formOpen, setFormOpen] = useState(false);
-  const [time, setTime] = useState("08:00");
+  const [startTime, setStartTime] = useState<TimeHM>("08:00");
+  const [endTime, setEndTime] = useState<TimeHM | "">("");
+  const [step, setStep] = useState(60);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
   const [notice, setNotice] = useState("");
@@ -106,30 +142,84 @@ export default function AgendaPage() {
   );
 
   const selectedDMY = formatDMY(selectedDate);
-  const daySlots = slots.filter((slot) => slot.date === selectedDMY);
+  const daySlots = useMemo(
+    () => slots.filter((slot) => slot.date === selectedDMY),
+    [slots, selectedDMY],
+  );
   const availableCount = daySlots.filter((s) => s.state === "AVAILABLE").length;
   const bookedCount = daySlots.filter((s) => s.state === "SCHEDULED").length;
 
-  async function handleAddSlot(event: FormEvent<HTMLFormElement>) {
+  // ---- Pré-visualização do que será salvo ----
+  const plannedTimes = useMemo(
+    () => buildTimeRange(startTime, endTime, step),
+    [startTime, endTime, step],
+  );
+
+  const rangeError = useMemo(() => {
+    if (!startTime) return "Informe o horário inicial.";
+    if (endTime && timeToMinutes(endTime) < timeToMinutes(startTime)) {
+      return "O horário final precisa ser depois do inicial.";
+    }
+    if (plannedTimes.length > MAX_BATCH) {
+      return `Máximo de ${MAX_BATCH} horários por vez. Reduza o intervalo.`;
+    }
+    return "";
+  }, [startTime, endTime, plannedTimes.length]);
+
+  const plan = useMemo(() => {
+    const existing = new Set(daySlots.map((slot) => slot.time));
+
+    return plannedTimes.map((time): { time: TimeHM; status: PlanStatus } => {
+      if (existing.has(time)) return { time, status: "EXISTS" };
+      if (new Date(combineDMYAndTime(selectedDMY, time)) <= today) {
+        return { time, status: "PAST" };
+      }
+      return { time, status: "NEW" };
+    });
+  }, [plannedTimes, daySlots, selectedDMY, today]);
+
+  const timesToSave = plan.filter((item) => item.status === "NEW");
+
+  async function handleAddSlots(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormError("");
     setNotice("");
 
-    const dateTime = combineDMYAndTime(selectedDMY, time);
+    if (rangeError) {
+      setFormError(rangeError);
+      return;
+    }
 
-    if (new Date(dateTime) <= new Date()) {
-      setFormError("Escolha um horário no futuro.");
+    // Reconfere "passado" com a hora real do clique
+    const now = new Date();
+    const times = timesToSave
+      .map((item) => item.time)
+      .filter((time) => new Date(combineDMYAndTime(selectedDMY, time)) > now);
+
+    if (times.length === 0) {
+      setFormError("Nenhum horário novo para salvar neste dia.");
       return;
     }
 
     setSaving(true);
     try {
-      await createSchedule({ dateTime });
+      const result = await createSchedulesBatch(selectedDMY, times);
+
+      // A lista da tela vem sempre do servidor: o que aparece está gravado.
       await loadAgenda();
-      setNotice(`Horário ${time} de ${selectedDMY} adicionado.`);
-      setFormOpen(false);
-    } catch (err) {
-      setFormError(getErrorMessage(err));
+
+      const summary = summarize(result, selectedDMY);
+      if (summary) setNotice(summary);
+
+      if (result.failed.length > 0) {
+        const first = result.failed[0];
+        setFormError(
+          `${plural(result.failed.length, "horário não foi salvo", "horários não foram salvos")}. ` +
+            `Ex.: ${first.time} — ${first.message}`,
+        );
+      } else {
+        setFormOpen(false);
+      }
     } finally {
       setSaving(false);
     }
@@ -171,33 +261,105 @@ export default function AgendaPage() {
       )}
 
       {formOpen && (
-        <form onSubmit={handleAddSlot} className={cx(ui.card, styles.form)}>
-          <div>
-            <p className={styles.formLabel}>Data</p>
-            <p className={styles.formValue}>{selectedDMY}</p>
+        <form onSubmit={handleAddSlots} className={cx(ui.card, styles.form)}>
+          <div className={styles.fields}>
+            <div>
+              <p className={styles.formLabel}>Data</p>
+              <p className={styles.formValue}>{selectedDMY}</p>
+            </div>
+
+            <label className={styles.timeField}>
+              Início
+              <input
+                type="time"
+                value={startTime}
+                onChange={(event) => setStartTime(event.target.value)}
+                required
+                className={styles.timeInput}
+              />
+            </label>
+
+            <label className={styles.timeField}>
+              Até (opcional)
+              <input
+                type="time"
+                value={endTime}
+                onChange={(event) => setEndTime(event.target.value)}
+                className={styles.timeInput}
+              />
+            </label>
+
+            {endTime && (
+              <label className={styles.timeField}>
+                A cada
+                <select
+                  value={step}
+                  onChange={(event) => setStep(Number(event.target.value))}
+                  className={styles.timeInput}
+                >
+                  {STEP_OPTIONS.map((minutes) => (
+                    <option key={minutes} value={minutes}>
+                      {minutes} min
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
           </div>
 
-          <label className={styles.timeField}>
-            Horário
-            <input
-              type="time"
-              step={900}
-              value={time}
-              onChange={(event) => setTime(event.target.value)}
-              required
-              className={styles.timeInput}
-            />
-          </label>
+          {plan.length > 0 && !rangeError && (
+            <div>
+              <p className={styles.previewTitle}>
+                {plural(timesToSave.length, "horário novo", "horários novos")} em{" "}
+                {selectedDMY}
+              </p>
+              <ul className={styles.chips}>
+                {plan.map((item) => (
+                  <li
+                    key={item.time}
+                    className={cx(
+                      styles.chip,
+                      item.status === "NEW" ? styles.chipNew : styles.chipSkip,
+                    )}
+                  >
+                    {item.time}
+                    {item.status === "EXISTS" && " · já cadastrado"}
+                    {item.status === "PAST" && " · já passou"}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <button type="submit" disabled={saving} className={ui.btnPrimary}>
-            {saving ? "Salvando..." : "Salvar horário"}
-          </button>
-
-          {formError && (
+          {(rangeError || formError) && (
             <p role="alert" className={styles.formError}>
-              {formError}
+              {rangeError || formError}
             </p>
           )}
+
+          <div className={styles.formFooter}>
+            <button
+              type="submit"
+              disabled={saving || timesToSave.length === 0 || rangeError !== ""}
+              className={ui.btnPrimary}
+            >
+              {saving
+                ? "Salvando..."
+                : timesToSave.length > 1
+                  ? `Salvar ${timesToSave.length} horários`
+                  : "Salvar horário"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setFormOpen(false);
+                setFormError("");
+              }}
+              className={ui.btnGhost}
+            >
+              Cancelar
+            </button>
+          </div>
         </form>
       )}
 

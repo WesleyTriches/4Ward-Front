@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { saveToken } from "./auth_service";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { saveToken } from "./auth_service";
+import styles from "../auth.module.css";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -12,80 +15,146 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [erro, setErro] = useState("");
 
-    async function submitForm(event: any) {
-        console.log(event)
-        //pause a submissao do form - nao atualiza a page
+    async function submitForm(event: React.SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
         setErro("");
 
-        //fazer uma request via http post para a api
-       const resp = await fetch("http://localhost:3000/api/auth/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                email: email, password: password
-            })
-        })
+        const resp = await fetch(
+            "http://localhost:3000/api/auth/login",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            }
+        );
+
         if (!resp.ok) {
-            var error = await resp.json();
+            const error = await resp.json();
             setErro(error.message);
             return;
         }
+
         const dados = await resp.json();
-        console.log(dados.access_token);
+
         saveToken(dados.access_token);
-        //redirecionar
-        router.replace("/admin");
+
+        router.replace("/");
     }
 
     return (
-        <div className="container py-5">
-            <h1 className="mb-3">Login</h1>
+        <main className={styles.page}>
+            <div className={styles.container}>
 
-            {erro != "" && (
-                <p>{erro}</p>
-            )}
-            
-
-            <form onSubmit={submitForm} className="card p-3">
-                <div className="mb-3">
-                    <label className="form-label">E-mail</label>
-                    <input
-                        onChange={(e)=> setEmail(e.target.value)}
-                        type="email"
-                        className="form-control"
-                        placeholder="nome@exemplo.com"
-                        required />
+                <div className={styles.logo}>
+                    4Ward
                 </div>
 
-                <div className="mb-3">
-                    <label className="form-label">Senha</label>
-                    <div className="input-group">
-                        <input
-                            onChange={(e)=> setPassword(e.target.value)}
-                            type={showPassword ? "text" : "password"}
-                            className="form-control"
-                            placeholder="••••••••"
-                            required />
-                        <div className="input-group-append">
-                            <button
-                                onClick={() => setShowPassword(!showPassword)}
-                                type="button"
-                                className="btn btn-outline-secondary">
-                                {showPassword ? (
-                                    <i className="bi bi-eye"></i>
-                                ) : (
-                                    <i className="bi bi-eye-slash"></i>
-                                )}
-                            </button>
+                <div className={styles.card}>
+                    <h1 className={styles.title}>
+                        Bem-vindo de volta
+                    </h1>
+
+                    <p className={styles.subtitle}>
+                        Acesse sua conta para continuar.
+                    </p>
+
+                    {erro && (
+                        <p className={styles.error}>
+                            {erro}
+                        </p>
+                    )}
+
+                    <form onSubmit={submitForm}>
+
+                        <div className={styles.field}>
+                            <label
+                                htmlFor="email"
+                                className={styles.label}
+                            >
+                                E-mail
+                            </label>
+
+                            <input
+                                id="email"
+                                type="email"
+                                className={styles.input}
+                                placeholder="seu@email.com"
+                                value={email}
+                                onChange={(e) =>
+                                    setEmail(e.target.value)
+                                }
+                                required
+                            />
                         </div>
-                    </div>
-                </div>
 
-                <button className="btn btn-dark" type="submit">
-                    Entrar
-                </button>
-            </form>
-        </div>
+                        <div className={styles.field}>
+                            <label
+                                htmlFor="password"
+                                className={styles.label}
+                            >
+                                Senha
+                            </label>
+
+                            <div className={styles.password}>
+                                <input
+                                    id="password"
+                                    type={
+                                        showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
+                                    className={styles.input}
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    required
+                                />
+
+                                <button
+                                    type="button"
+                                    className={styles.eyeButton}
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                >
+                                    <i
+                                        className={
+                                            showPassword
+                                                ? "bi bi-eye"
+                                                : "bi bi-eye-slash"
+                                        }
+                                    />
+                                </button>
+                            </div>
+                        </div>
+
+                        <button
+                            className={styles.button}
+                            type="submit"
+                        >
+                            Entrar
+                        </button>
+
+                    </form>
+
+                    <p className={styles.footer}>
+                        Ainda não tem uma conta?{" "}
+                        <Link
+                            href="/register"
+                            className={styles.link}
+                        >
+                            Cadastre-se
+                        </Link>
+                    </p>
+                </div>
+            </div>
+        </main>
     );
 }

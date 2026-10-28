@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { use, useCallback, useEffect, useMemo, useState } from "react";
 import WeekPicker from "../../components/WeekPicker";
 import { cx } from "../../lib/cx";
 import {
@@ -198,11 +199,13 @@ function AppointmentCard({
 /* ------------------------------------------------------------------ */
 
 type BookingPanelProps = {
+  /** Fisioterapeuta vindo de ?physiotherapistId= (já validado como número) */
+  initialPhysioId: number | null;
   onBooked: () => void;
   onClose: () => void;
 };
 
-function BookingPanel({ onBooked, onClose }: BookingPanelProps) {
+function BookingPanel({ initialPhysioId, onBooked, onClose }: BookingPanelProps) {
   const [now] = useState(() => new Date());
 
   const [physios, setPhysios] = useState<Physiotherapist[]>([]);
@@ -222,7 +225,17 @@ function BookingPanel({ onBooked, onClose }: BookingPanelProps) {
 
     getPhysiotherapists()
       .then((data) => {
-        if (active) setPhysios(data);
+        if (!active) return;
+        setPhysios(data);
+
+        if (initialPhysioId === null) return;
+        // Mesmo caminho de quando o paciente escolhe no select
+        if (data.some((p) => p.id === initialPhysioId)) {
+          void handlePhysioChange(String(initialPhysioId));
+        } else {
+          // Id que não existe: fecha o painel e mostra a tela normal
+          onClose();
+        }
       })
       .catch((err: unknown) => {
         if (active) setError(getErrorMessage(err));
@@ -231,6 +244,8 @@ function BookingPanel({ onBooked, onClose }: BookingPanelProps) {
     return () => {
       active = false;
     };
+    // Roda só ao abrir o painel: a lista é buscada uma vez
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectedPhysio = physios.find((p) => String(p.id) === physioId) ?? null;
@@ -449,17 +464,34 @@ function BookingPanel({ onBooked, onClose }: BookingPanelProps) {
 /* Página                                                              */
 /* ------------------------------------------------------------------ */
 
-export default function ConsultasPage() {
+/** "12" -> 12; vazio, "abc", "1.5", "-3" -> null */
+function parsePhysioId(value: string | string[] | undefined): number | null {
+  if (typeof value !== "string" || !/^\d+$/.test(value)) return null;
+  const id = Number(value);
+  return id > 0 ? id : null;
+}
+
+type ConsultasPageProps = {
+  searchParams: Promise<{ physiotherapistId?: string | string[] }>;
+};
+
+export default function ConsultasPage({ searchParams }: ConsultasPageProps) {
+  const router = useRouter();
+  const { physiotherapistId } = use(searchParams);
+
   const [user] = useState(() => getSessionUser());
   const [now] = useState(() => new Date());
   const isPatient = user?.role === "PATIENT";
+
+  // Vindo de "Agendar consulta" na lista de fisioterapeutas; só paciente agenda
+  const urlPhysioId = isPatient ? parsePhysioId(physiotherapistId) : null;
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [tab, setTab] = useState<Tab>("upcoming");
-  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(urlPhysioId !== null);
 
   const loadAppointments = useCallback(async () => {
     try {
@@ -495,6 +527,8 @@ export default function ConsultasPage() {
     setTab("upcoming");
     setNotice("Consulta agendada com sucesso!");
     void loadAppointments();
+    // Tira o ?physiotherapistId= para o painel não reabrir ao recarregar
+    if (physiotherapistId !== undefined) router.replace("/consultas");
   }
 
   function handleCancelled() {
@@ -542,7 +576,11 @@ export default function ConsultasPage() {
       )}
 
       {isPatient && bookingOpen && (
-        <BookingPanel onBooked={handleBooked} onClose={() => setBookingOpen(false)} />
+        <BookingPanel
+          initialPhysioId={urlPhysioId}
+          onBooked={handleBooked}
+          onClose={() => setBookingOpen(false)}
+        />
       )}
 
       <div className={styles.tabs}>

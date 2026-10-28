@@ -1,0 +1,112 @@
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+.logo {
+  flex-shrink: 0;
+  text-decoration: none;
+
+  color: var(--brand-600);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  color: var(--ink-600);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.navLink:hover {
+  color: var(--ink-900);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* ---------- Botões (mesmo estilo do botão principal do auth.module.css) ---------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: nowrap;
+
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.buttonPrimary {
+  background: var(--brand-600);
+  color: #ffffff;
+}
+
+.buttonPrimary:hover {
+  background: var(--brand-700);
+  color: #ffffff;
+}
+
+.buttonLight {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink-700);
+}
+
+.buttonLight:hover {
+  background: var(--surface-muted);
+  color: var(--ink-900);
+}
+
+/* ---------- Telas pequenas ---------- */
+@media (max-width: 767px) {
+  .container {
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  /* os links do meio somem; ficam só o logo e os botões */
+  .nav {
+    display: none;
+  }
+
+  .button {
+    padding: 8px 12px;
+  }
+}

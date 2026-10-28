@@ -1,0 +1,68 @@
+/* a "caixa" é o campo: borda, sombra e cantos arredondados; o botão fica dentro dela */
+.form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 18px;
+
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+/* :focus-within = algum elemento dentro do form está com foco */
+.form:focus-within {
+  border-color: var(--brand-600);
+  box-shadow: 0 0 0 3px var(--brand-100);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--ink-400);
+  font-size: 1.125rem;
+}
+
+.input {
+  flex: 1;
+  min-width: 0; /* deixa o input encolher em telas estreitas */
+  padding: 12px 0;
+
+  border: 0;
+  outline: none;
+  background: transparent;
+
+  color: var(--ink-900);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.input::placeholder {
+  color: var(--ink-400);
+}
+
+/* mesmo estilo do botão principal do auth.module.css, só que quadrado */
+.button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: var(--brand-600);
+  color: #ffffff;
+  font-size: 1.25rem;
+
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.button:hover {
+  background: var(--brand-700);
+}

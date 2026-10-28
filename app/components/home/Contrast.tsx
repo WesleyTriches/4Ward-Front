@@ -1,16 +1,22 @@
+import styles from "./Contrast.module.css";
 import SearchBar from "./SearchBar";
 
 export default function Contrast() {
     return (
-        <section className="container py-5">
-            <h1 className="mb-3">Movimento para uma vida melhor.</h1>
+        <section className={styles.hero}>
+            <div className={styles.content}>
+                <h1 className={styles.title}>
+                    Movimento para<br />
+                    uma vida <span className={styles.highlight}>melhor.</span>
+                </h1>
 
-            <p className="mb-4">
-                Encontre fisioterapeutas qualificados perto de você
-                e agende sua consulta de forma rápida e segura.
-            </p>
+                <p className={styles.subtitle}>
+                    Encontre fisioterapeutas qualificados perto de você
+                    e agende sua consulta de forma rápida e segura.
+                </p>
 
-            <SearchBar />
+                <SearchBar />
+            </div>
         </section>
     );
 }

@@ -1,0 +1,25 @@
+.section {
+  border-top: 1px solid var(--line);
+  background: var(--surface-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 64px 24px;
+  list-style: none;
+}
+
+/* telas pequenas: um benefício embaixo do outro */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 48px 16px;
+  }
+}

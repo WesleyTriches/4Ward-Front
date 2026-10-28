@@ -1,5 +1,6 @@
 import { Features } from "../../types/home";
 import FeatureItem from "./FeatureItem";
+import styles from "./FeatureList.module.css";
 
 // benefícios da home: ficam numa lista para renderizar com .map
 const features: Features[] = [
@@ -10,16 +11,14 @@ const features: Features[] = [
 
 export default function FeatureList() {
     return (
-        <section id="como-funciona" className="py-5">
-            <div className="container">
-                <div className="row">
-                    {features.map((feature) => (
-                        <div key={feature.title} className="col-md-4">
-                            <FeatureItem feature={feature} />
-                        </div>
-                    ))}
-                </div>
-            </div>
+        <section id="como-funciona" className={styles.section}>
+            <ul className={styles.grid}>
+                {features.map((feature) => (
+                    <li key={feature.title}>
+                        <FeatureItem feature={feature} />
+                    </li>
+                ))}
+            </ul>
         </section>
     );
 }

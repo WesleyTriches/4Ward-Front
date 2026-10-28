@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { cx } from "../../lib/cx";
+import styles from "./SearchBar.module.css";
 
 export default function SearchBar() {
 
@@ -22,16 +24,17 @@ export default function SearchBar() {
     }
 
     return (
-        <form onSubmit={pesquisar} className="input-group">
+        <form onSubmit={pesquisar} className={styles.form}>
+            <i className={cx("bi bi-search", styles.icon)} aria-hidden="true"></i>
             <input
                 type="text"
-                className="form-control"
+                className={styles.input}
                 placeholder="Busque por cidade"
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
             />
-            <button className="btn btn-dark" type="submit">
-                Buscar
+            <button className={styles.button} type="submit" aria-label="Buscar">
+                <i className="bi bi-arrow-right" aria-hidden="true"></i>
             </button>
         </form>
     );

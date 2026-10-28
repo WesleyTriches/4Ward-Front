@@ -8,3 +8,11 @@ export type Profile = {
   createdAt: string;
   updatedAt: string;
 };
+
+/** Corpo do PUT /profiles/me. Só os campos enviados são alterados. */
+export type UpdateProfileInput = {
+  fullName?: string;
+  /** "AAAA-MM-DD" */
+  birthDate?: string;
+  avatarUrl?: string;
+};

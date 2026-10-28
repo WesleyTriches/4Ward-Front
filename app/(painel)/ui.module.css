@@ -222,3 +222,45 @@
 textarea.input {
   resize: vertical;
 }
+
+/* Formulário de edição em cartão (meu perfil e perfil profissional) */
+.formCard {
+  composes: card;
+  margin-top: 24px;
+  padding: 16px;
+}
+
+.field + .field,
+.fieldRow + .field,
+.field + .fieldRow,
+.fieldRow + .fieldRow {
+  margin-top: 16px;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.hint {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--ink-500);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+@media (min-width: 640px) {
+  .formCard {
+    padding: 24px;
+  }
+
+  .fieldRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

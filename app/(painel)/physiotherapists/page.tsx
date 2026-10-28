@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 
-import { getToken } from "../login/auth_service";
-import { getSessionUser } from "../services/sessionService";
-import { Physiotherapist } from "../types/physiotherapists";
-import { Specialty } from "../types/specialty";
+import { getToken } from "../../login/auth_service";
+import { getSessionUser } from "../../services/sessionService";
+import { Physiotherapist } from "../../types/physiotherapists";
+import { Specialty } from "../../types/specialty";
 
 import styles from "./page.module.css";
 
@@ -109,7 +109,7 @@ export default function PhysiotherapistsPage({
     }, []);
 
     return (
-        <main className={styles.page}>
+        <div className={styles.page}>
 
             <div className={styles.header}>
                 <h1 className={styles.title}>
@@ -276,6 +276,6 @@ export default function PhysiotherapistsPage({
                 </section>
 
             </div>
-        </main>
+        </div>
     );
 }

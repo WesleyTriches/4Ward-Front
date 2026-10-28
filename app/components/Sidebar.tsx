@@ -17,25 +17,47 @@ type NavItem = {
 
 const ALL_ROLES: UserRole[] = ["PATIENT", "PHYSIOTHERAPIST"];
 
+// A ordem do array é a ordem em que os itens aparecem no menu
 const NAV_ITEMS: NavItem[] = [
   { label: "Início", href: "/", icon: "bi-house", roles: ALL_ROLES },
   {
+    // Exclusivo do paciente: o fisio não procura outros fisios
     label: "Fisioterapeutas",
     href: "/physiotherapists",
     icon: "bi-people",
-    roles: ALL_ROLES,
-  },
-  {
-    label: "Minhas consultas",
-    href: "/consultas",
-    icon: "bi-calendar-check",
-    roles: ALL_ROLES,
+    roles: ["PATIENT"],
   },
   {
     // Exclusivo do fisioterapeuta
     label: "Minha agenda",
     href: "/agenda",
     icon: "bi-calendar3",
+    roles: ["PHYSIOTHERAPIST"],
+  },
+  // Mesma tela /consultas, com um nome diferente para cada perfil
+  {
+    label: "Minhas consultas",
+    href: "/consultas",
+    icon: "bi-calendar-check",
+    roles: ["PATIENT"],
+  },
+  {
+    label: "Consultas",
+    href: "/consultas",
+    icon: "bi-calendar-check",
+    roles: ["PHYSIOTHERAPIST"],
+  },
+  { label: "Meu perfil", href: "/perfil", icon: "bi-person", roles: ALL_ROLES },
+  {
+    label: "Perfil profissional",
+    href: "/perfil-profissional",
+    icon: "bi-briefcase",
+    roles: ["PHYSIOTHERAPIST"],
+  },
+  {
+    label: "Especialidades",
+    href: "/especialidades",
+    icon: "bi-tags",
     roles: ["PHYSIOTHERAPIST"],
   },
 ];

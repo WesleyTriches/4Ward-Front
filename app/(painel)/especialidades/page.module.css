@@ -1,0 +1,83 @@
+/* Estilos específicos de Especialidades. Os genéricos estão em ../ui.module.css */
+
+/* ---------- Formulário ---------- */
+.formEditing {
+  border-color: var(--brand-100);
+}
+
+.formTitle {
+  margin-bottom: 16px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--ink-500);
+}
+
+.formActions {
+  gap: 8px;
+}
+
+/* ---------- Lista ---------- */
+.listTitle {
+  margin-top: 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.loading {
+  margin-top: 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+}
+
+.itemEditing {
+  border-color: var(--brand-500);
+  background: var(--brand-50);
+}
+
+.itemIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-size: 1.125rem;
+}
+
+.itemText {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.itemDescription {
+  margin-top: 2px;
+  font-size: 0.875rem;
+  color: var(--ink-500);
+}

@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import Sidebar from "../components/Sidebar";
 import { clearToken } from "../login/auth_service";
+import { ApiError } from "../services/apiClient";
+import { getMyPhysiotherapist } from "../services/physiotherapistService";
 import { getSessionUser, type SessionUser } from "../services/sessionService";
 import styles from "./layout.module.css";
 
@@ -20,7 +22,22 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       return;
     }
 
-    setUser(session);
+    if (session.role !== "PHYSIOTHERAPIST") {
+      setUser(session);
+      return;
+    }
+
+    // Fisio sem perfil profissional (ex.: fechou o navegador no meio do
+    // cadastro) volta para completar antes de usar o painel.
+    getMyPhysiotherapist()
+      .then(() => setUser(session))
+      .catch((error) => {
+        if (error instanceof ApiError && error.status === 404) {
+          router.replace("/cadastro-profissional");
+        } else {
+          setUser(session);
+        }
+      });
   }, [router]);
 
   if (!user) return null;

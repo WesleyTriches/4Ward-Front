@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { saveToken } from "./auth_service";
+import { ApiError } from "../services/apiClient";
+import { getMyPhysiotherapist } from "../services/physiotherapistService";
 import styles from "../auth.module.css";
 
 export default function LoginPage() {
@@ -43,7 +45,22 @@ export default function LoginPage() {
 
         saveToken(dados.access_token);
 
-        router.replace("/");
+        if (dados.user.role !== "PHYSIOTHERAPIST") {
+            router.replace("/consultas");
+            return;
+        }
+
+        // 404 em /physiotherapists/me = perfil profissional ainda não criado
+        try {
+            await getMyPhysiotherapist();
+            router.replace("/agenda");
+        } catch (error) {
+            if (error instanceof ApiError && error.status === 404) {
+                router.replace("/cadastro-profissional");
+            } else {
+                router.replace("/agenda");
+            }
+        }
     }
 
     return (

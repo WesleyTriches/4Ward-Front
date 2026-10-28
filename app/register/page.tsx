@@ -50,8 +50,9 @@ export default function RegisterPage() {
 
         saveToken(dados.access_token);
 
+        // Fisioterapeuta recém-cadastrado ainda não tem perfil profissional
         if (role === "PHYSIOTHERAPIST") {
-            router.replace("/agenda");
+            router.replace("/cadastro-profissional");
         } else {
             router.replace("/consultas");
         }

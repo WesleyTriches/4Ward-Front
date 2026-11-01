@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 4Ward — Frontend
 
-## Getting Started
+Frontend do **4Ward**, uma plataforma para conectar pacientes e fisioterapeutas, permitindo busca de profissionais, gerenciamento de horários e agendamento de consultas.
 
-First, run the development server:
+## Tecnologias
+
+- Next.js
+- React
+- TypeScript
+- CSS Modules
+- Bootstrap Icons
+
+## Pré-requisitos
+
+Antes de iniciar, tenha instalado:
+
+- Node.js
+- npm
+
+Também é necessário que o **backend do 4Ward** esteja em execução em:
+
+```text
+http://localhost:3000/api
+```
+
+## Instalação
+
+Clone o repositório e acesse a pasta do projeto:
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd 4Ward-Front
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+## Executar o projeto
+
+Inicie o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A aplicação ficará disponível em:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3001
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Build
 
-## Learn More
+Para gerar a versão de produção:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Para executar a versão de produção:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm start
+```
 
-## Deploy on Vercel
+## Funcionalidades
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O frontend permite:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- cadastro e login de usuários;
+- busca de fisioterapeutas;
+- filtros por cidade, especialidade e modalidade;
+- agendamento de consultas;
+- acompanhamento e gerenciamento de consultas;
+- gerenciamento da agenda do fisioterapeuta;
+- edição de perfil;
+- cadastro e edição do perfil profissional.

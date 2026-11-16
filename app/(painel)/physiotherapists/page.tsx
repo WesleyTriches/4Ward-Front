@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 
+import { currency } from "../../lib/currency";
 import { getToken } from "../../login/auth_service";
 import { getSessionUser } from "../../services/sessionService";
 import { Physiotherapist } from "../../types/physiotherapists";
@@ -255,7 +256,7 @@ export default function PhysiotherapistsPage({
 
                                 <div className={styles.actions}>
                                     <strong className={styles.price}>
-                                        R$ {physio.sessionPrice.toFixed(2)}
+                                        {currency.format(physio.sessionPrice)}
                                     </strong>
 
                                     {isPatient && (

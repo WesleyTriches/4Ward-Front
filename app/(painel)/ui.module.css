@@ -8,11 +8,7 @@
   color: var(--ink-900);
 }
 
-/*
-  O Bootstrap (carregado no <head>) define margens em p, h1..h6, ul, dl etc.
-  Zeramos aqui, com especificidade maior que a dele, e cada classe abaixo
-  declara a margem que realmente quer.
-*/
+/* Zera margens padrão; cada classe abaixo declara a margem que realmente quer. */
 .page :where(h1, h2, h3, p, ul, ol, dl, dt, dd, figure) {
   margin: 0;
   padding: 0;

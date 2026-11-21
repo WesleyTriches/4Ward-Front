@@ -1,215 +1,105 @@
+/*
+  Só o que é específico desta tela. Botões, campos, título, avisos e
+  cartões vêm do ../ui.module.css, como nas outras telas do painel.
+*/
+
+/* Mesma base das outras telas, mas mais larga por causa da coluna de filtros */
 .page {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    /* o padding externo vem do layout do (painel) */
-    color: var(--ink-900);
-}
-
-.header {
-    margin-bottom: 24px;
-}
-
-.title {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 700;
-}
-
-.subtitle {
-    margin: 6px 0 0;
-    color: var(--ink-500);
-    font-size: 0.875rem;
+  composes: page from "../ui.module.css";
+  max-width: 1100px;
 }
 
 .content {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 24px;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 24px;
 }
 
+/* ---------- Filtros ---------- */
 .filters {
-    padding: 20px;
-
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
+  padding: 20px;
 }
 
 .filterTitle {
-    margin: 0 0 20px;
-
-    font-size: 1rem;
-    font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .field {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
-.label {
-    display: block;
-    margin-bottom: 4px;
-
-    color: var(--ink-700);
-    font-size: 0.875rem;
-    font-weight: 500;
+/* ---------- Resultados ---------- */
+/* O emptyBox tem margem em cima; aqui ele fica alinhado aos filtros */
+.results > div {
+  margin-top: 0;
 }
 
-.input {
-    width: 100%;
-    padding: 9px 12px;
-
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-
-    background: #ffffff;
-    color: var(--ink-900);
-
-    font-size: 0.875rem;
-}
-
-.input:focus {
-    outline: none;
-    border-color: var(--brand-600);
-    box-shadow: 0 0 0 3px var(--brand-100);
-}
-
-.searchButton,
-.scheduleButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    border: 0;
-    border-radius: 8px;
-
-    background: var(--brand-600);
-    color: #ffffff;
-
-    font-size: 0.875rem;
-    font-weight: 600;
-
-    cursor: pointer;
-}
-
-.searchButton {
-    width: 100%;
-    padding: 10px 16px;
-}
-
-.scheduleButton {
-    padding: 9px 14px;
-}
-
-.searchButton:hover,
-.scheduleButton:hover {
-    background: var(--brand-700);
-}
-
-.results {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .card {
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-
-    padding: 20px;
-
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px;
 }
 
 .info {
-    min-width: 0;
+  min-width: 0;
 }
 
 .name {
-    margin: 0 0 4px;
-
-    color: var(--ink-900);
-    font-size: 1.1rem;
-    font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .specialty {
-    margin: 0 0 12px;
-
-    color: var(--brand-600);
-    font-size: 0.875rem;
-    font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--brand-600);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-
-    margin: 4px 0 0;
-
-    color: var(--ink-500);
-    font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: var(--ink-500);
+  font-size: 0.875rem;
 }
 
 .actions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .price {
-    white-space: nowrap;
-
-    color: var(--ink-900);
-    font-size: 1rem;
-}
-
-.error {
-    margin-bottom: 16px;
-    padding: 12px 16px;
-
-    border-radius: 8px;
-
-    background: var(--danger-50);
-    color: var(--danger-700);
-
-    font-size: 0.875rem;
-}
-
-.empty {
-    padding: 40px 16px;
-
-    border: 1px dashed #cbd5e1;
-    border-radius: 12px;
-
-    color: var(--ink-500);
-    text-align: center;
-    font-size: 0.875rem;
+  white-space: nowrap;
+  font-size: 1rem;
 }
 
 @media (max-width: 768px) {
-    .content {
-        grid-template-columns: 1fr;
-    }
+  .content {
+    grid-template-columns: 1fr;
+  }
 
-    .card {
-        flex-direction: column;
-    }
+  .card {
+    flex-direction: column;
+  }
 
-    .actions {
-        align-items: stretch;
-    }
-
-    .scheduleButton {
-        width: 100%;
-    }
+  .actions {
+    align-items: stretch;
+  }
 }

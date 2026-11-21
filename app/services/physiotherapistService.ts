@@ -2,8 +2,28 @@ import { apiFetch } from "./apiClient";
 import type {
   CreatePhysiotherapistInput,
   Physiotherapist,
+  PhysiotherapistFilters,
   UpdatePhysiotherapistInput,
 } from "../types/physiotherapists";
+
+/**
+ * GET /physiotherapists — lista os fisioterapeutas.
+ * Filtros vazios são ignorados; sem filtros, traz todos.
+ */
+export function getPhysiotherapists(
+  filters: PhysiotherapistFilters = {},
+): Promise<Physiotherapist[]> {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(filters)) {
+    const text = value?.trim();
+    if (text) params.set(key, text);
+  }
+
+  const query = params.toString();
+  return apiFetch<Physiotherapist[]>(
+    `/physiotherapists${query ? `?${query}` : ""}`,
+  );
+}
 
 /**
  * GET /physiotherapists/me — perfil profissional do usuário logado.

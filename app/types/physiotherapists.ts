@@ -35,3 +35,10 @@ export type CreatePhysiotherapistInput = {
 
 /** Corpo do PUT /physiotherapists/me. Mesmos campos do cadastro. */
 export type UpdatePhysiotherapistInput = Partial<CreatePhysiotherapistInput>;
+
+/** Filtros do GET /physiotherapists. Campo vazio = sem filtro. */
+export type PhysiotherapistFilters = {
+  city?: string;
+  specialtyId?: string;
+  serviceMode?: ServiceMode | "";
+};

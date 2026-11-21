@@ -12,10 +12,8 @@ import {
   toDateKey,
 } from "../../../lib/date";
 import { getErrorMessage } from "../../../services/apiClient";
-import {
-  createAppointment,
-  getPhysiotherapists,
-} from "../../../services/appointmentService";
+import { createAppointment } from "../../../services/appointmentService";
+import { getPhysiotherapists } from "../../../services/physiotherapistService";
 import { getAvailableSchedules } from "../../../services/scheduleService";
 import type { Physiotherapist } from "../../../types/physiotherapists";
 import type { Schedule } from "../../../types/schedule";

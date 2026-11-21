@@ -1,5 +1,4 @@
 import { apiFetch } from "./apiClient";
-import type { Physiotherapist } from "../types/physiotherapists";
 import type {
   Appointment,
   AppointmentStatus,
@@ -37,9 +36,4 @@ export function cancelAppointment(
     method: "PATCH",
     body: JSON.stringify(input),
   });
-}
-
-/** GET /physiotherapists — dado auxiliar do fluxo de agendamento. */
-export function getPhysiotherapists(): Promise<Physiotherapist[]> {
-  return apiFetch<Physiotherapist[]>("/physiotherapists");
 }

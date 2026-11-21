@@ -49,7 +49,7 @@ npm run dev
 A aplicação ficará disponível em:
 
 ```text
-http://localhost:3001
+http://localhost:3002
 ```
 
 ## Build
@@ -78,3 +78,16 @@ O frontend permite:
 - gerenciamento da agenda do fisioterapeuta;
 - edição de perfil;
 - cadastro e edição do perfil profissional.
+
+## Uso de Inteligência Artificial
+
+Parte deste projeto foi desenvolvida com o auxílio de IA: o **Claude** (Anthropic), usado através do **Claude Code**.
+
+A IA foi usada para:
+
+- revisar o código e apontar bugs e melhorias;
+- remover dependências que não eram usadas (Bootstrap, Tailwind e arquivos do template);
+- padronizar a tela de busca de fisioterapeutas com o restante do painel;
+- pequenas correções, como a formatação de preços e a acessibilidade dos formulários.
+
+As mudanças foram testadas no navegador antes de entrar no projeto.

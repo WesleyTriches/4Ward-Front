@@ -2,6 +2,14 @@
 
 Frontend do **4Ward**, uma plataforma para conectar pacientes e fisioterapeutas, permitindo busca de profissionais, gerenciamento de horários e agendamento de consultas.
 
+## Equipe
+
+Projeto desenvolvido por:
+
+- Alberto Neto
+- Gabriel Trentini
+- Wesley Triches
+
 ## Tecnologias
 
 - Next.js
